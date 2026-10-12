@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌟 لعبة الضاد</title>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/tajawal@5.0.0/index.css" rel="stylesheet">
+<style id="themeStyle">
+:root { 
+  --primary: #46178f; 
+  --primary-light: #7b2cbf; 
+  --accent: #ffd60a; 
+  --success: #06a77d; 
+  --danger: #e63946; 
+  --info: #457b9d; 
+  --dark: #1a0933; 
+  --warning: #ff9500;
+  --bg-gradient: linear-gradient(135deg, var(--dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Tajawal',sans-serif; }
+body { background: var(--bg-gradient); min-height:100vh; color:#fff; overflow-x:hidden; }
+.logo { display:flex; align-items:center; justify-content:center; gap:15px; margin:20px 0; }
+.logo-icon { width:80px; height:80px; background:linear-gradient(135deg, var(--accent), var(--warning)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:3em; color:var(--primary); font-weight:900; box-shadow:0 10px 30px rgba(255,214,10,.4); border:4px solid rgba(255,255,255,.3); animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
+.logo-text h1 { font-size:2.5em; color:var(--accent); text-shadow:3px 3px 10px rgba(0,0,0,.5); }
+.screen { display:none; padding:20px; max-width:1400px; margin:0 auto; animation:fadeIn .5s; }
+.screen.active { display:block; }
+@keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+h1,h2,h3 { text-align:center; margin:15px 0; text-shadow:2px 2px 8px rgba(0,0,0,.3); }
+h1 { font-size:2.2em; color:var(--accent); }
+h2 { font-size:1.6em; }
+.btn { background:var(--accent); color:var(--primary); border:none; padding:12px 24px; font-size:1em; font-weight:bold; border-radius:12px; cursor:pointer; margin:5px; transition:all .2s; box-shadow:0 4px 0 #b8860b; display:inline-flex; align-items:center; gap:8px; font-family:inherit; }
+.btn:hover { transform:translateY(-2px); box-shadow:0 6px 0 #b8860b; }
+.btn:active { transform:translateY(2px); box-shadow:0 2px 0 #b8860b; }
+.btn-danger { background:var(--danger); color:#fff; box-shadow:0 4px 0 #9d0208; }
+.btn-success { background:var(--success); color:#fff; box-shadow:0 4px 0 #005f73; }
+.btn-info { background:var(--info); color:#fff; box-shadow:0 4px 0 #2a4d6d; }
+.btn-warning { background:var(--warning); color:#fff; box-shadow:0 4px 0 #cc7700; }
+.btn-secondary { background:#6c757d; color:#fff; box-shadow:0 4px 0 #495057; }
+.btn-sm { padding:8px 15px; font-size:.9em; }
+.btn-lg { padding:16px 32px; font-size:1.2em; }
+.card { background:rgba(255,255,255,.12); backdrop-filter:blur(10px); border-radius:18px; padding:25px; margin:15px 0; border:2px solid rgba(255,255,255,.2); box-shadow:0 8px 32px rgba(0,0,0,.2); }
+input,select,textarea { width:100%; padding:12px; margin:8px 0; border-radius:10px; border:2px solid rgba(255,255,255,.3); background:rgba(255,255,255,.95); color:#333; font-size:1em; font-family:inherit; }
+input:focus,textarea:focus,select:focus { outline:none; border-color:var(--accent); }
+.login-box { max-width:500px; margin:30px auto; text-align:center; }
+.role-btn { display:flex; align-items:center; justify-content:center; gap:15px; width:100%; margin:12px 0; font-size:1.2em; padding:20px; }
+.role-btn .icon { font-size:2em; }
+.topbar { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:rgba(0,0,0,.3); border-radius:15px; margin-bottom:20px; flex-wrap:wrap; gap:10px; backdrop-filter:blur(10px); }
+.topbar .user-info { display:flex; align-items:center; gap:10px; font-size:1.1em; font-weight:bold; }
+.topbar .avatar { width:45px; height:45px; border-radius:50%; background:linear-gradient(135deg, var(--accent), var(--warning)); display:flex; align-items:center; justify-content:center; font-size:1.5em; color:var(--primary); }
+.sync-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(16,185,129,.2); padding:4px 10px; border-radius:15px; font-size:.8em; border:1px solid rgba(16,185,129,.4); }
+.sync-dot { width:8px; height:8px; border-radius:50%; background:var(--success); animation:blink 1.5s infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.3;} }
+.tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; background:rgba(0,0,0,.2); padding:10px; border-radius:15px; }
+.tab { padding:10px 16px; background:rgba(255,255,255,.1); border-radius:10px; cursor:pointer; border:2px solid transparent; transition:all .2s; display:flex; align-items:center; gap:6px; font-weight:bold; font-size:.95em; }
+.tab:hover { background:rgba(255,255,255,.2); }
+.tab.active { background:var(--accent); color:var(--primary); border-color:#fff; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:15px; }
+.grid-2 { display:grid; grid-template-columns:repeat(auto-fill, minmax(350px, 1fr)); gap:15px; }
+.group-card { background:linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.05)); border-radius:15px; padding:20px; transition:all .3s; border:2px solid transparent; position:relative; overflow:hidden; }
+.group-card:hover { transform:translateY(-5px); border-color:var(--accent); }
+.group-card.crown { background:linear-gradient(135deg, var(--accent), var(--warning)); color:var(--primary); box-shadow:0 10px 30px rgba(255,214,10,.4); }
+.group-card .crown-badge { position:absolute; top:10px; left:10px; font-size:2em; animation:bounce 1s infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
+.group-card .group-name { font-size:1.3em; font-weight:bold; margin-bottom:10px; }
+.group-card .group-info { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; font-size:.85em; }
+.group-card .group-info span { background:rgba(0,0,0,.2); padding:4px 10px; border-radius:20px; }
+.group-card .group-score { font-size:2.5em; font-weight:900; text-align:center; color:var(--accent); margin:15px 0; }
+.group-card.crown .group-score { color:var(--primary); }
+.class-card { background:linear-gradient(135deg, rgba(69,123,157,.3), rgba(69,123,157,.1)); border-radius:15px; padding:20px; border:2px solid rgba(255,255,255,.2); transition:all .3s; }
+.class-card:hover { transform:translateY(-3px); border-color:var(--accent); }
+.class-card .class-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding-bottom:10px; border-bottom:2px solid rgba(255,255,255,.2); }
+.class-card .class-name { font-size:1.3em; font-weight:bold; display:flex; align-items:center; gap:10px; }
+.class-card .class-stats { display:flex; gap:15px; justify-content:space-around; background:rgba(0,0,0,.2); padding:10px; border-radius:10px; margin:10px 0; }
+.class-card .stat { text-align:center; }
+.class-card .stat-value { font-size:1.5em; font-weight:bold; color:var(--accent); }
+.class-card .stat-label { font-size:.85em; opacity:.8; }
+.wheel-container { position:relative; width:340px; height:340px; margin:20px auto; }
+.wheel { width:100%; height:100%; border-radius:50%; border:10px solid var(--accent); position:relative; transition:transform 5s cubic-bezier(.17,.67,.21,.99); box-shadow:0 0 50px rgba(255,214,10,.5), inset 0 0 30px rgba(0,0,0,.3); }
+.wheel-pointer { position:absolute; top:-25px; left:50%; transform:translateX(-50%); font-size:3em; z-index:10; filter:drop-shadow(0 3px 5px rgba(0,0,0,.5)); }
+.wheel-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:60px; height:60px; border-radius:50%; background:linear-gradient(135deg, var(--accent), var(--warning)); display:flex; align-items:center; justify-content:center; font-size:1.5em; color:var(--primary); font-weight:900; box-shadow:0 5px 15px rgba(0,0,0,.3); z-index:5; }
+.revealed-card { background:linear-gradient(135deg, var(--accent), var(--warning)); color:var(--primary); border-radius:25px; padding:30px; margin:20px auto; max-width:500px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,.4); border:4px solid rgba(255,255,255,.3); position:relative; overflow:hidden; }
+.revealed-card.show { animation:cardReveal .8s; }
+@keyframes cardReveal { 0% { transform:scale(0) rotate(180deg); opacity:0; } 50% { transform:scale(1.1) rotate(0); } 100% { transform:scale(1) rotate(0); opacity:1; } }
+.revealed-card .card-type { font-size:.9em; background:rgba(0,0,0,.2); padding:5px 15px; border-radius:20px; display:inline-block; margin-bottom:15px; }
+.revealed-card .card-title { font-size:1.8em; font-weight:900; margin:10px 0; }
+.revealed-card .card-desc { font-size:1.1em; margin:15px 0; line-height:1.6; }
+.revealed-card .card-points { font-size:1.5em; font-weight:bold; margin-top:15px; }
+.score-display { font-size:3.5em; text-align:center; color:var(--accent); margin:20px 0; text-shadow:3px 3px 10px rgba(0,0,0,.5); font-weight:900; }
+.question-item { background:rgba(255,255,255,.1); padding:18px; border-radius:12px; margin:10px 0; border-right:5px solid var(--accent); }
+.question-item .q-text { font-size:1.1em; font-weight:bold; margin-bottom:10px; }
+.question-item .q-options { display:flex; flex-wrap:wrap; gap:8px; }
+.question-item .q-option { background:rgba(255,255,255,.15); padding:6px 12px; border-radius:8px; font-size:.9em; }
+.question-item .q-option.correct { background:var(--success); }
+.question-item .q-points { display:inline-block; background:var(--accent); color:var(--primary); padding:3px 10px; border-radius:15px; font-size:.85em; font-weight:bold; margin-top:8px; }
+.points-row { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:15px 0; }
+.points-btn { padding:12px 20px; border-radius:12px; border:none; font-weight:bold; cursor:pointer; font-size:1em; transition:all .2s; display:flex; align-items:center; gap:5px; box-shadow:0 3px 0 rgba(0,0,0,.2); font-family:inherit; }
+.points-btn.plus { background:var(--success); color:#fff; }
+.points-btn.minus { background:var(--danger); color:#fff; }
+.points-btn:hover { transform:scale(1.05); }
+.leaderboard { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:15px; }
+.lb-item { background:rgba(255,255,255,.15); padding:20px; border-radius:15px; text-align:center; position:relative; transition:all .3s; border:2px solid transparent; }
+.lb-item:hover { transform:translateY(-3px); border-color:var(--accent); }
+.lb-item.first { background:linear-gradient(135deg, var(--accent), var(--warning)); color:var(--primary); box-shadow:0 10px 30px rgba(255,214,10,.4); }
+.lb-item.second { background:linear-gradient(135deg, #c0c0c0, #a8a8a8); color:#333; }
+.lb-item.third { background:linear-gradient(135deg, #cd7f32, #b87333); color:#fff; }
+.lb-item .rank { font-size:2.5em; margin-bottom:5px; }
+.lb-item .name { font-size:1.2em; font-weight:bold; margin:5px 0; }
+.lb-item .class-tag { display:inline-block; background:rgba(0,0,0,.2); padding:3px 10px; border-radius:15px; font-size:.8em; margin:5px 0; }
+.lb-item .score { font-size:2em; color:var(--accent); margin-top:5px; font-weight:900; }
+.lb-item.first .score { color:var(--primary); }
+.lb-item.second .score { color:#333; }
+.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:100; justify-content:center; align-items:center; padding:20px; backdrop-filter:blur(8px); overflow-y:auto; }
+.modal-bg.show { display:flex; }
+.modal { background:linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius:20px; padding:30px; max-width:800px; width:100%; max-height:90vh; overflow-y:auto; border:3px solid var(--accent); box-shadow:0 20px 60px rgba(0,0,0,.5); margin:auto; }
+.toast { position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--success); color:#fff; padding:15px 30px; border-radius:12px; z-index:200; font-weight:bold; box-shadow:0 10px 30px rgba(0,0,0,.3); animation:slideDown .3s; display:flex; align-items:center; gap:10px; font-size:1.1em; }
+.toast.err { background:var(--danger); }
+@keyframes slideDown { from{transform:translate(-50%,-100px); opacity:0;} to{transform:translate(-50%,0); opacity:1;} }
+.flex-row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.flex-row > * { flex:1; min-width:150px; }
+.flex-center { display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap; }
+.badge { display:inline-block; padding:5px 12px; border-radius:20px; font-size:.85em; font-weight:bold; margin:3px; }
+.badge-crown { background:var(--accent); color:var(--primary); }
+.badge-info { background:var(--info); color:#fff; }
+.badge-success { background:var(--success); color:#fff; }
+.badge-warning { background:var(--warning); color:#fff; }
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin:20px 0; }
+.stat-box { background:rgba(255,255,255,.1); padding:20px; border-radius:15px; text-align:center; border:2px solid rgba(255,255,255,.2); }
+.stat-box .stat-icon { font-size:2.5em; margin-bottom:10px; }
+.stat-box .stat-value { font-size:2em; font-weight:900; color:var(--accent); }
+.stat-box .stat-label { font-size:.9em; opacity:.8; margin-top:5px; }
+.log-item { background:rgba(255,255,255,.08); padding:12px 18px; border-radius:10px; margin:8px 0; display:flex; align-items:center; gap:12px; border-right:4px solid var(--accent); }
+.log-item .log-icon { font-size:1.5em; }
+.log-item .log-content { flex:1; }
+.log-item .log-time { font-size:.8em; opacity:.7; }
+.log-item.points-plus { border-color:var(--success); }
+.log-item.points-minus { border-color:var(--danger); }
+.log-item.card-draw { border-color:var(--warning); }
+.waiting-card { background:rgba(255,255,255,.05); border:3px dashed rgba(255,214,10,.4); border-radius:20px; padding:40px 20px; text-align:center; margin:20px 0; }
+.waiting-card .wait-icon { font-size:4em; margin-bottom:15px; animation:waitPulse 2s infinite; }
+@keyframes waitPulse { 0%,100%{transform:scale(1); opacity:.6;} 50%{transform:scale(1.1); opacity:1;} }
+.new-card-alert { background:linear-gradient(135deg, var(--accent), var(--warning)); color:var(--primary); border-radius:20px; padding:25px; margin:20px 0; text-align:center; animation:alertPop .5s, alertGlow 1.5s infinite; box-shadow:0 10px 40px rgba(255,214,10,.5); }
+@keyframes alertPop { 0%{transform:scale(0); opacity:0;} 100%{transform:scale(1); opacity:1;} }
+@keyframes alertGlow { 0%,100%{box-shadow:0 10px 40px rgba(255,214,10,.5);} 50%{box-shadow:0 10px 60px rgba(255,214,10,.8), 0 0 80px rgba(255,214,10,.4);} }
+@media (max-width:768px) { h1 { font-size:1.8em; } .logo-icon { width:60px; height:60px; font-size:2.2em; } .score-display { font-size:2.5em; } .wheel-container { width:280px; height:280px; } .tab { padding:8px 12px; font-size:.85em; } .btn { padding:10px 18px; font-size:.95em; } }
+.glow { animation:glow 2s ease-in-out infinite alternate; }
+@keyframes glow { from{box-shadow:0 0 10px var(--accent);} to{box-shadow:0 0 25px var(--accent), 0 0 40px var(--accent);} }
+.empty-state { text-align:center; padding:40px 20px; opacity:.7; }
+.empty-state .empty-icon { font-size:4em; margin-bottom:15px; }
+.home-layout { display:grid; grid-template-columns:1fr 300px; gap:20px; min-height:calc(100vh - 200px); }
+@media (max-width:900px) { .home-layout { grid-template-columns:1fr; } }
+.presentation-area { background:rgba(0,0,0,.3); border-radius:18px; padding:20px; min-height:500px; display:flex; flex-direction:column; }
+.presentation-viewer { flex:1; background:#fff; border-radius:12px; display:flex; align-items:center; justify-content:center; min-height:500px; overflow:hidden; position:relative; }
+.presentation-viewer iframe { width:100%; height:100%; border:none; }
+.presentation-viewer img { max-width:100%; max-height:100%; object-fit:contain; }
+.presentation-viewer video { max-width:100%; max-height:100%; }
+.sidebar { background:rgba(255,255,255,.08); border-radius:18px; padding:15px; max-height:calc(100vh - 200px); overflow-y:auto; }
+.sidebar h3 { font-size:1.1em; margin-bottom:10px; }
+.sidebar-class { margin-bottom:15px; }
+.sidebar-class-title { font-weight:bold; color:var(--accent); margin-bottom:8px; padding:8px; background:rgba(255,214,10,.1); border-radius:8px; }
+.sidebar-group { display:flex; align-items:center; justify-content:space-between; padding:8px; margin:5px 0; background:rgba(255,255,255,.05); border-radius:8px; }
+.sidebar-group-name { flex:1; font-size:.9em; }
+.sidebar-group-score { font-weight:bold; color:var(--accent); margin:0 10px; min-width:50px; text-align:center; }
+.sidebar-group-btns { display:flex; gap:3px; }
+.sidebar-group-btns button { width:30px; height:30px; border-radius:50%; border:none; font-weight:bold; cursor:pointer; font-size:1em; }
+.btn-plus { background:var(--success); color:#fff; }
+.btn-minus { background:var(--danger); color:#fff; }
+.wheel-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.9); z-index:1000; justify-content:center; align-items:center; padding:20px; }
+.wheel-overlay.show { display:flex; }
+.wheel-overlay-content { background:linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius:20px; padding:30px; max-width:600px; width:100%; max-height:90vh; overflow-y:auto; border:3px solid var(--accent); position:relative; }
+.wheel-overlay-close { position:absolute; top:10px; left:10px; background:var(--danger); color:#fff; border:none; width:40px; height:40px; border-radius:50%; font-size:1.5em; cursor:pointer; }
+.lesson-card { background:rgba(255,255,255,.1); border-radius:12px; padding:15px; margin:10px 0; display:flex; align-items:center; gap:15px; transition:all .2s; }
+.lesson-card:hover { background:rgba(255,255,255,.15); transform:translateX(-5px); }
+.lesson-icon { font-size:2.5em; }
+.lesson-info { flex:1; }
+.lesson-title { font-weight:bold; font-size:1.1em; margin-bottom:5px; }
+.lesson-meta { font-size:.85em; opacity:.7; }
+.lesson-actions { display:flex; gap:5px; }
+.student-card { background:rgba(255,255,255,.1); border-radius:12px; padding:15px; margin:10px 0; display:flex; align-items:center; gap:15px; }
+.student-avatar { width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg, var(--accent), var(--warning)); display:flex; align-items:center; justify-content:center; font-size:1.5em; color:var(--primary); font-weight:bold; }
+.student-info { flex:1; }
+.student-name { font-weight:bold; font-size:1.1em; }
+.student-class { font-size:.85em; opacity:.7; }
+.theme-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:15px; margin:20px 0; }
+.theme-card { background:rgba(255,255,255,.1); border-radius:15px; padding:20px; text-align:center; cursor:pointer; transition:all .3s; border:3px solid transparent; }
+.theme-card:hover { transform:translateY(-5px); border-color:var(--accent); }
+.theme-card.active { border-color:var(--accent); box-shadow:0 0 20px rgba(255,214,10,.5); }
+.theme-preview { width:100%; height:100px; border-radius:10px; margin-bottom:10px; display:flex; align-items:center; justify-content:center; font-size:2em; color:#fff; font-weight:bold; }
+.theme-name { font-weight:bold; font-size:1.1em; margin:5px 0; }
+.color-picker-section { margin:20px 0; padding:20px; background:rgba(255,255,255,.05); border-radius:15px; }
+.color-row { display:flex; align-items:center; gap:15px; margin:10px 0; flex-wrap:wrap; }
+.color-row label { flex:1; min-width:150px; font-weight:bold; }
+.color-row input[type="color"] { width:80px; height:50px; border:none; border-radius:10px; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<!-- شاشة تسجيل الدخول -->
+<div id="loginScreen" class="screen active">
+  <div class="login-box">
+    <div class="logo">
+      <div class="logo-icon">ض</div>
+      <div class="logo-text">
+        <h1>🌟 لعبة الضاد 🌟</h1>
+      </div>
+    </div>
+    <div class="card">
+      <h2>🎮 اختر نوع الدخول</h2>
+      <button class="btn role-btn" onclick="showLogin('teacher')">
+        <span class="icon">👨‍🏫</span><span>دخول المدرس</span>
+      </button>
+      <button class="btn role-btn btn-success" onclick="showLogin('leader')">
+        <span class="icon">👑</span><span>دخول قائد الفريق</span>
+      </button>
+      <button class="btn role-btn btn-info" onclick="showLogin('student')">
+        <span class="icon">🎓</span><span>دخول الطالب</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- شاشة المصادقة -->
+<div id="authScreen" class="screen">
+  <div class="login-box">
+    <div class="logo"><div class="logo-icon">ض</div></div>
+    <h1 id="authTitle">🔐 تسجيل الدخول</h1>
+    <div class="card">
+      <input type="text" id="authUser" placeholder="👤 اسم المستخدم">
+      <input type="password" id="authPass" placeholder="🔑 كلمة المرور">
+      <div class="flex-center">
+        <button class="btn" onclick="doLogin()">🚀 دخول</button>
+        <button class="btn btn-secondary" onclick="backToLogin()">🔙 رجوع</button>
+      </div>
+      <div id="registerLink" style="margin-top:15px; display:none">
+        <p style="opacity:.8">مش مسجل؟ <a href="#" onclick="showRegister()" style="color:var(--accent); text-decoration:underline; font-weight:bold">📝 سجل حساب جديد</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- شاشة التسجيل -->
+<div id="registerScreen" class="screen">
+  <div class="login-box">
+    <div class="logo"><div class="logo-icon">ض</div></div>
+    <h1 id="registerTitle">📝 تسجيل حساب جديد</h1>
+    <div class="card">
+      <div id="registerForm"></div>
+    </div>
+  </div>
+</div>
+
+<!-- لوحة المدرس -->
+<div id="teacherScreen" class="screen">
+  <div class="topbar">
+    <div class="user-info">
+      <div class="avatar">👨‍🏫</div>
+      <div>
+        <div style="font-size:1.2em" id="teacherDisplayName">مستر أحمد</div>
+        <div style="font-size:.85em; opacity:.8">
+          <span class="sync-badge"><span class="sync-dot"></span> متصل ومشترك</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-danger btn-sm" onclick="logout()">🚪 خروج</button>
+  </div>
+
+  <div class="stats-grid" id="teacherStats"></div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('home', event)"><span>🏠</span> الرئيسية</div>
+    <div class="tab" onclick="switchTab('classes', event)"><span>🏫</span> الفصول</div>
+    <div class="tab" onclick="switchTab('groups', event)"><span>👥</span> المجموعات</div>
+    <div class="tab" onclick="switchTab('lessons', event)"><span>📚</span> الدروس</div>
+    <div class="tab" onclick="switchTab('students', event)"><span>🎓</span> الطلاب</div>
+    <div class="tab" onclick="switchTab('questions', event)"><span>❓</span> الأسئلة</div>
+    <div class="tab" onclick="switchTab('cards', event)"><span>🎴</span> الكروت</div>
+    <div class="tab" onclick="switchTab('draw', event)"><span>🎯</span> سحب الكروت</div>
+    <div class="tab" onclick="switchTab('points', event)"><span>💎</span> النقاط</div>
+    <div class="tab" onclick="switchTab('log', event)"><span>📜</span> السجل</div>
+    <div class="tab" onclick="switchTab('leaderboard', event)"><span>🏆</span> الترتيب</div>
+    <div class="tab" onclick="switchTab('settings', event)"><span>⚙️</span> الإعدادات</div>
+  </div>
+
+  <!-- تبويب الرئيسية -->
+  <div id="tab-home" class="tab-content">
+    <div class="home-layout">
+      <div class="presentation-area">
+        <h2>📊 العرض التقديمي</h2>
+        <div style="margin-bottom:15px; display:flex; gap:10px; flex-wrap:wrap">
+          <button class="btn" onclick="showFileUpload()">📁 استعراض من الكمبيوتر</button>
+          <button class="btn btn-info" onclick="showLinkInput()">🔗 عرض من رابط</button>
+          <button class="btn btn-warning" onclick="openWheelOverlay()">🎯 عجلة الكروت</button>
+        </div>
+        <div class="presentation-viewer" id="presentationViewer">
+          <p style="opacity:.5; text-align:center; padding:40px; color:#333">
+            📊 اختر طريقة العرض:<br>
+            <small style="opacity:.7">
+              • <strong>استعراض من الكمبيوتر:</strong> رفع ملف من جهازك<br>
+              • <strong>عرض من رابط:</strong> Google Drive أو OneDrive (الأفضل للعرض الكامل)
+            </small>
+          </p>
+        </div>
+      </div>
+      <div class="sidebar">
+        <h3>👥 المجموعات السريعة</h3>
+        <div id="sidebarGroups"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- تبويب الإعدادات -->
+  <div id="tab-settings" class="tab-content" style="display:none">
+    <div class="card">
+      <h2>⚙️ إعدادات المظهر</h2>
+      <p style="opacity:.8; text-align:center; margin-bottom:20px">اختر الثيم المناسب أو خصص الألوان بنفسك</p>
+      
+      <h3 style="margin:20px 0 10px">🎨 الثيمات الجاهزة</h3>
+      <div class="theme-grid" id="themeGrid"></div>
+      
+      <div class="color-picker-section">
+        <h3 style="margin-bottom:15px">🖌️ تخصيص الألوان</h3>
+        <div class="color-row">
+          <label>🟣 اللون الأساسي:</label>
+          <input type="color" id="colorPrimary" value="#46178f" onchange="applyCustomColors()">
+        </div>
+        <div class="color-row">
+          <label>💜 اللون الأساسي الفاتح:</label>
+          <input type="color" id="colorPrimaryLight" value="#7b2cbf" onchange="applyCustomColors()">
+        </div>
+        <div class="color-row">
+          <label>🟡 لون التمييز:</label>
+          <input type="color" id="colorAccent" value="#ffd60a" onchange="applyCustomColors()">
+        </div>
+        <div class="color-row">
+          <label>🌑 اللون الداكن:</label>
+          <input type="color" id="colorDark" value="#1a0933" onchange="applyCustomColors()">
+        </div>
+        <div class="color-row">
+          <label>🟠 لون التحذير:</label>
+          <input type="color" id="colorWarning" value="#ff9500" onchange="applyCustomColors()">
+        </div>
+        <div class="flex-center" style="margin-top:20px">
+          <button class="btn btn-success" onclick="saveTheme()">💾 حفظ الثيم</button>
+          <button class="btn btn-warning" onclick="resetTheme()">🔄 استعادة الافتراضي</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- باقي التبويبات (نفس الكود السابق) -->
+  <div id="tab-classes" class="tab-content" style="display:none">
+    <div class="card">
+      <h2>🏫 إدارة الفصول</h2>
+      <div class="flex-row">
+        <input type="text" id="newClassName" placeholder="✏️ اسم الفصل">
+        <button class="btn btn-success" onclick="addClass()">➕ إضافة</button>
+      </div>
+    </div>
+    <div id="classesList" class="grid-2"></div>
+  </div>
+
+  <div id="tab-groups" class="tab-content" style="display:none">
+    <div class="card">
+      <h2>👥 المجموعات</h2>
+      <div class="flex-row">
+        <select id="groupClassFilter" onchange="renderGroups()">
+          <option value="">📚 كل الفصول</option>
+        </select>
+        <button class="btn btn-success" onclick="showAddGroupModal()">➕ مجموعة جديدة</button>
+      </div>
+    </div>
+    <div id="groupsList" class="grid"></div>
+  </div>
+
+  <div id="tab-lessons" class="tab-content" style="display:none">
+    <div class="card">
+      <h2>📚 الدروس</h2>
+      <div class="flex-row">
+        <input type="text" id="lessonTitle" placeholder="✏️ عنوان الدرس">
+        <select id="lessonClass">
+          <option value="">🏫 اختر الفصل</option>
+        </select>
+        <input type="file" id="lessonFile" accept=".pdf,.pptx,.jpg,.png,.mp4">
+        <button class="btn btn-success" onclick="addLesson()">➕ إضافة الدرس</button>
+      </div>
+    </div>
+    <div id="lessonsList"></div>
+  </div>
+
+  <div id="tab-students" class="tab-content" style="display:none">
+    <div class="card">
+      <h2>🎓 الطلاب المسجلين</h2>
+      <p style="opacity:.8">إجمالي الطلاب: <strong id="totalStudents">0</strong></p>
+    </div>
+    <div id="studentsList"></div>
+  </div>
+
+  <div id="tab-questions" class="tab-content" style="display:none">
+    <div class="card">
+      <h2>❓ إضافة سؤال</h2>
+      <input type="text" id="qText" placeholder="✏️ نص السؤال">
+      <input type="text" class="q-option-input" placeholder="🅰️ الخيار الأول">
+      <input type="text" class="q-option-input" placeholder="🅱️ الخيار الثاني">
+      <input type="text" class="q-option-input" placeholder="🅲️ الخيار الثالث">
+      <input type="text" class="q-option-input" placeholder="🅳️ الخيار الرابع">
+      <div class="flex-row">
+        <select id="qCorrect">
+          <option value="0">✅ الأول</option>
+          <option value="1">✅ الثاني</option>
+          <option value="2">✅ الثالث</option>
+          <option value="3">✅ الرابع</option>
+        </select>
+        <input type="number" id="qPoints" placeholder="💎 النقاط" value="10">
+      </div>
+      <button class="btn btn-success" onclick="addQuestion()">➕ إضافة السؤال</button>
+    </div>
+    <div id="questionsList"></div>
+  </div>
+
+  <div id="tab-cards" class="tab-content" style="display:none">
+    <div class="card">
+      <h2>🎴 إدارة الكروت</h2>
+      <label>📝 نوع الكارت:</label>
+      <select id="cardType">
+        <option value="question">❓ سؤال</option>
+        <option value="bonus">🎁 بونص نقاط</option>
+        <option value="challenge">⚔️ تحدي</option>
+        <option value="trap">⚠️ فخ / ماينص</option>
+        <option value="special">✨ خاص</option>
+      </select>
+      <input type="text" id="cardTitle" placeholder="✏️ عنوان الكارت">
+      <textarea id="cardDesc" rows="3" placeholder="📝 شرح الكارت / فائدته"></textarea>
+      <input type="number" id="cardPoints" placeholder="💎 النقاط (اختياري)">
+      <button class="btn btn-success" onclick="addCard()">➕ إضافة كارت</button>
+    </div>
+    <div id="cardsList"></div>
+  </div>
+
+  <div id="tab-draw" class="tab-content" style="display:none">
+    <div class="card" style="text-align:center">
+      <h2>🎯 سحب الكروت</h2>
+      <div id="drawStep1">
+        <h3>🎡 لف العجلة</h3>
+        <div class="wheel-container">
+          <div class="wheel-pointer">🔻</div>
+          <div class="wheel" id="drawWheel"></div>
+          <div class="wheel-center">ض</div>
+        </div>
+        <button class="btn btn-lg glow" onclick="spinDrawWheel()">🎯 لف العجلة</button>
+      </div>
+      <div id="drawStep2" style="display:none">
+        <h3>👥 اختر المجموعة</h3>
+        <div class="revealed-card" style="background:linear-gradient(135deg, #6c757d, #495057); color:#fff">
+          <div class="card-type" id="pendingType">🎴 كارت</div>
+          <div class="card-title">🔒 الكارت مقفل</div>
+          <div class="card-desc">اختر المجموعة</div>
+        </div>
+        <select id="drawGroupSelect" style="max-width:400px; margin:10px auto; display:block"></select>
+        <div class="flex-center" style="margin-top:15px">
+          <button class="btn btn-success btn-lg" onclick="sendCardToGroup()">📤 إرسال للقائد</button>
+          <button class="btn btn-secondary" onclick="resetDraw()">🔄 إعادة</button>
+        </div>
+      </div>
+      <div id="drawStep3" style="display:none">
+        <h3>📤 تم الإرسال!</h3>
+        <div class="card" style="max-width:500px; margin:0 auto">
+          <div style="font-size:4em; margin:15px 0">✅</div>
+          <p style="font-size:1.2em">تم إرسال الكارت لـ <strong id="sentGroupName" style="color:var(--accent)"></strong></p>
+          <button class="btn btn-lg" onclick="resetDraw()">🎯 سحب كارت تاني</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-points" class="tab-content" style="display:none">
+    <div class="card">
+      <h2>💎 إضافة / خصم نقاط</h2>
+      <label>🏫 الفصل:</label>
+      <select id="pointsClass" onchange="updatePointsGroups()"></select>
+      <label>👥 المجموعة:</label>
+      <select id="pointsGroup" onchange="showCurrentScore()"></select>
+      <div class="score-display" id="currentScore">0</div>
+      <h3>🎁 بونص (+)</h3>
+      <div class="points-row" id="plusRow"></div>
+      <h3>⚠️ ماينص (-)</h3>
+      <div class="points-row" id="minusRow"></div>
+      <h3>🔢 رقم مخصص</h3>
+      <div class="flex-row">
+        <input type="number" id="customPoints" placeholder="💎 الرقم">
+        <button class="btn btn-success" onclick="addCustomPoints(1)">➕ إضافة</button>
+        <button class="btn btn-danger" onclick="addCustomPoints(-1)">➖ خصم</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-log" class="tab-content" style="display:none">
+    <div class="card">
+      <h2>📜 سجل الأحداث</h2>
+      <button class="btn btn-danger btn-sm" onclick="clearLog()">🗑️ مسح السجل</button>
+    </div>
+    <div id="logList"></div>
+  </div>
+
+  <div id="tab-leaderboard" class="tab-content" style="display:none">
+    <div class="card">
+      <h2>🏆 الترتيب</h2>
+      <div class="flex-center" style="margin-bottom:20px">
+        <button class="btn" onclick="renderLeaderboard('school')">🏫 المدرسة</button>
+        <button class="btn btn-info" onclick="renderLeaderboard('class')">📚 الفصل</button>
+      </div>
+      <select id="lbClassFilter" onchange="renderLeaderboard('class')" style="display:none; margin-bottom:15px"></select>
+      <div id="leaderboardList" class="leaderboard"></div>
+    </div>
+  </div>
+</div>
+
+<!-- شاشة القائد -->
+<div id="leaderScreen" class="screen">
+  <div class="topbar">
+    <div class="user-info">
+      <div class="avatar">👑</div>
+      <div>
+        <div style="font-size:1.2em">قائد: <span id="leaderName"></span></div>
+        <div style="font-size:.85em; opacity:.8">
+          <span id="leaderGroupInfo"></span>
+          <span class="sync-badge" style="margin-right:8px"><span class="sync-dot"></span> متصل</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-danger btn-sm" onclick="logout()">🚪 خروج</button>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchLeaderTab('card', event)"><span>🎴</span> الكارت السري</div>
+    <div class="tab" onclick="switchLeaderTab('info', event)"><span>💎</span> نقاطي</div>
+    <div class="tab" onclick="switchLeaderTab('lessons', event)"><span>📚</span> الدروس</div>
+  </div>
+  <div id="leaderTab-card">
+    <div id="leaderCardArea"></div>
+  </div>
+  <div id="leaderTab-info" style="display:none">
+    <div class="card" style="text-align:center">
+      <h2>💎 نقاط فريقك</h2>
+      <div class="score-display" id="leaderScore">0</div>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-icon">📚</div>
+          <div class="stat-value" id="leaderClassRank">-</div>
+          <div class="stat-label">ترتيبك في الفصل</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">🏫</div>
+          <div class="stat-value" id="leaderSchoolRank">-</div>
+          <div class="stat-label">ترتيبك في المدرسة</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="leaderTab-lessons" style="display:none">
+    <div id="leaderLessonsList"></div>
+  </div>
+</div>
+
+<!-- شاشة الطالب -->
+<div id="studentScreen" class="screen">
+  <div class="topbar">
+    <div class="user-info">
+      <div class="avatar">🎓</div>
+      <div>
+        <div style="font-size:1.2em">طالب: <span id="studentName"></span></div>
+        <div style="font-size:.85em; opacity:.8">
+          <span class="sync-badge" style="margin-right:8px"><span class="sync-dot"></span> مباشر</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-danger btn-sm" onclick="logout()">🚪 خروج</button>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchStudentTab('ranking', event)"><span>🏆</span> الترتيب</div>
+    <div class="tab" onclick="switchStudentTab('lessons', event)"><span>📚</span> الدروس</div>
+  </div>
+  <div id="studentTab-ranking">
+    <div class="card">
+      <h2>🏆 الترتيب المباشر</h2>
+      <div class="flex-center" style="margin-bottom:20px">
+        <button class="btn" onclick="renderStudentLeaderboard('school')">🏫 المدرسة</button>
+        <button class="btn btn-info" onclick="renderStudentLeaderboard('class')">📚 الفصل</button>
+      </div>
+      <select id="studentClassFilter" onchange="renderStudentLeaderboard('class')" style="display:none; margin-bottom:15px"></select>
+      <div id="studentLeaderboard" class="leaderboard"></div>
+    </div>
+  </div>
+  <div id="studentTab-lessons" style="display:none">
+    <div id="studentLessonsList"></div>
+  </div>
+</div>
+
+<!-- Overlay العجلة -->
+<div class="wheel-overlay" id="wheelOverlay">
+  <div class="wheel-overlay-content">
+    <button class="wheel-overlay-close" onclick="closeWheelOverlay()">✕</button>
+    <h2>🎯 عجلة الكروت</h2>
+    <div class="wheel-container">
+      <div class="wheel-pointer">🔻</div>
+      <div class="wheel" id="overlayWheel"></div>
+      <div class="wheel-center">ض</div>
+    </div>
+    <button class="btn btn-lg glow" onclick="spinOverlayWheel()">🎯 لف العجلة</button>
+    <div id="overlayWheelResult" style="margin-top:20px"></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+// إعدادات JSONBin
+const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6acbc907ffd5d16053620679';
+const JSONBIN_KEY = '$2a$10$JKB7nuxHsyJ8KLe0S8vIDOLSfE82MQ1JiWi/IRZxsiPq8ToTq2xFm';
+
+let DB = {
+  classes: [], groups: [], questions: [], cards: [], lessons: [], students: [],
+  teachers: [{user:'ahmed', pass:'1234'}],
+  plusValues: [10, 20, 50, 100, 200],
+  minusValues: [10, 20, 50, 100, 200],
+  log: [],
+  pendingCards: {},
+  theme: null
+};
+
+let currentUser = null;
+let currentAuthRole = null;
+let currentDraw = { card:null, group:null };
+let pollInterval = null;
+
+// الثيمات
+const THEMES = {
+  default: { name: '🌟 الافتراضي', colors: { primary:'#46178f', primaryLight:'#7b2cbf', accent:'#ffd60a', dark:'#1a0933', warning:'#ff9500' }, preview: 'linear-gradient(135deg, #46178f, #7b2cbf)' },
+  ocean: { name: '🌊 المحيط', colors: { primary:'#0077b6', primaryLight:'#00b4d8', accent:'#ffd60a', dark:'#03045e', warning:'#f77f00' }, preview: 'linear-gradient(135deg, #0077b6, #00b4d8)' },
+  forest: { name: '🌲 الغابة', colors: { primary:'#2d6a4f', primaryLight:'#52b788', accent:'#ffd60a', dark:'#1b4332', warning:'#f77f00' }, preview: 'linear-gradient(135deg, #2d6a4f, #52b788)' },
+  sunset: { name: '🌅 الغروب', colors: { primary:'#c9184a', primaryLight:'#ff4d6d', accent:'#ffd60a', dark:'#590d22', warning:'#ff758f' }, preview: 'linear-gradient(135deg, #c9184a, #ff4d6d)' },
+  night: { name: '🌙 الليل', colors: { primary:'#1a1a2e', primaryLight:'#16213e', accent:'#ffd60a', dark:'#0f0f1e', warning:'#e94560' }, preview: 'linear-gradient(135deg, #1a1a2e, #16213e)' },
+  candy: { name: '🍭 الحلوى', colors: { primary:'#ff6b9d', primaryLight:'#c44569', accent:'#ffd60a', dark:'#574b90', warning:'#f8b500' }, preview: 'linear-gradient(135deg, #ff6b9d, #c44569)' },
+  royal: { name: '👑 الملكي', colors: { primary:'#3c1053', primaryLight:'#ad2831', accent:'#ffd60a', dark:'#1a0522', warning:'#d63230' }, preview: 'linear-gradient(135deg, #3c1053, #ad2831)' },
+  mint: { name: '🌿 النعناع', colors: { primary:'#06a77d', primaryLight:'#005f73', accent:'#ffd60a', dark:'#0a3d2e', warning:'#ee9b00' }, preview: 'linear-gradient(135deg, #06a77d, #005f73)' }
+};
+
+function applyTheme(themeKey) {
+  const theme = THEMES[themeKey];
+  if (!theme) return;
+  const root = document.documentElement;
+  root.style.setProperty('--primary', theme.colors.primary);
+  root.style.setProperty('--primary-light', theme.colors.primaryLight);
+  root.style.setProperty('--accent', theme.colors.accent);
+  root.style.setProperty('--dark', theme.colors.dark);
+  root.style.setProperty('--warning', theme.colors.warning);
+  root.style.setProperty('--bg-gradient', `linear-gradient(135deg, ${theme.colors.dark} 0%, ${theme.colors.primary} 50%, ${theme.colors.primaryLight} 100%)`);
+  document.getElementById('colorPrimary').value = theme.colors.primary;
+  document.getElementById('colorPrimaryLight').value = theme.colors.primaryLight;
+  document.getElementById('colorAccent').value = theme.colors.accent;
+  document.getElementById('colorDark').value = theme.colors.dark;
+  document.getElementById('colorWarning').value = theme.colors.warning;
+  document.querySelectorAll('.theme-card').forEach(card => card.classList.toggle('active', card.dataset.theme === themeKey));
+  DB.theme = themeKey;
+  save();
+  toast(`✅ تم تطبيق ثيم: ${theme.name}`);
+}
+
+function applyCustomColors() {
+  const primary = document.getElementById('colorPrimary').value;
+  const primaryLight = document.getElementById('colorPrimaryLight').value;
+  const accent = document.getElementById('colorAccent').value;
+  const dark = document.getElementById('colorDark').value;
+  const warning = document.getElementById('colorWarning').value;
+  const root = document.documentElement;
+  root.style.setProperty('--primary', primary);
+  root.style.setProperty('--primary-light', primaryLight);
+  root.style.setProperty('--accent', accent);
+  root.style.setProperty('--dark', dark);
+  root.style.setProperty('--warning', warning);
+  root.style.setProperty('--bg-gradient', `linear-gradient(135deg, ${dark} 0%, ${primary} 50%, ${primaryLight} 100%)`);
+  document.querySelectorAll('.theme-card').forEach(card => card.classList.remove('active'));
+}
+
+async function saveTheme() {
+  const customTheme = {
+    name: '🎨 مخصص',
+    colors: {
+      primary: document.getElementById('colorPrimary').value,
+      primaryLight: document.getElementById('colorPrimaryLight').value,
+      accent: document.getElementById('colorAccent').value,
+      dark: document.getElementById('colorDark').value,
+      warning: document.getElementById('colorWarning').value
+    }
+  };
+  DB.theme = customTheme;
+  await save();
+  toast('✅ تم حفظ الثيم المخصص');
+}
+
+function resetTheme() { applyTheme('default'); }
+
+function renderThemeGrid() {
+  const grid = document.getElementById('themeGrid');
+  grid.innerHTML = Object.keys(THEMES).map(key => {
+    const theme = THEMES[key];
+    const isActive = DB.theme === key;
+    return `<div class="theme-card ${isActive ? 'active' : ''}" data-theme="${key}" onclick="applyTheme('${key}')">
+      <div class="theme-preview" style="background:${theme.preview}">ض</div>
+      <div class="theme-name">${theme.name}</div>
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+async function loadData() {
+  try {
+    const response = await fetch(JSONBIN_URL + '/latest', { headers: { 'X-Master-Key': JSONBIN_KEY } });
+    const result = await response.json();
+    if (result && result.record) {
+      DB = result.record;
+      if (!DB.pendingCards) DB.pendingCards = {};
+      if (!DB.log) DB.log = [];
+      if (!DB.classes) DB.classes = [];
+      if (!DB.groups) DB.groups = [];
+      if (!DB.questions) DB.questions = [];
+      if (!DB.cards) DB.cards = [];
+      if (!DB.lessons) DB.lessons = [];
+      if (!DB.students) DB.students = [];
+      if (!DB.teachers) DB.teachers = [{user:'ahmed', pass:'1234'}];
+      if (DB.theme) {
+        if (typeof DB.theme === 'string' && THEMES[DB.theme]) {
+          const theme = THEMES[DB.theme];
+          const root = document.documentElement;
+          root.style.setProperty('--primary', theme.colors.primary);
+          root.style.setProperty('--primary-light', theme.colors.primaryLight);
+          root.style.setProperty('--accent', theme.colors.accent);
+          root.style.setProperty('--dark', theme.colors.dark);
+          root.style.setProperty('--warning', theme.colors.warning);
+          root.style.setProperty('--bg-gradient', `linear-gradient(135deg, ${theme.colors.dark} 0%, ${theme.colors.primary} 50%, ${theme.colors.primaryLight} 100%)`);
+        } else if (typeof DB.theme === 'object' && DB.theme.colors) {
+          const colors = DB.theme.colors;
+          const root = document.documentElement;
+          root.style.setProperty('--primary', colors.primary);
+          root.style.setProperty('--primary-light', colors.primaryLight);
+          root.style.setProperty('--accent', colors.accent);
+          root.style.setProperty('--dark', colors.dark);
+          root.style.setProperty('--warning', colors.warning);
+          root.style.setProperty('--bg-gradient', `linear-gradient(135deg, ${colors.dark} 0%, ${colors.primary} 50%, ${colors.primaryLight} 100%)`);
+        }
+      }
+    }
+    return true;
+  } catch (err) {
+    console.error('Load error:', err);
+    return false;
+  }
+}
+
+async function save() {
+  try {
+    await fetch(JSONBIN_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
+      body: JSON.stringify(DB)
+    });
+    return true;
+  } catch (err) {
+    console.error('Save error:', err);
+    toast('❌ فشل الحفظ', 'err');
+    return false;
+  }
+}
+
+async function initApp() {
+  const ok = await loadData();
+  if (ok) {
+    pollInterval = setInterval(async () => {
+      await loadData();
+      if (currentUser) {
+        if (currentUser.role === 'teacher') {
+          renderTeacherStats(); renderGroups(); renderClasses(); renderCards(); renderQuestions();
+          renderLog(); renderLeaderboard('school'); renderLessons(); renderStudents();
+          renderSidebar(); updateClassFilters();
+        } else if (currentUser.role === 'leader') {
+          loadLeader(); renderLeaderCard(); renderLeaderLessons();
+        } else if (currentUser.role === 'student') {
+          renderStudentLeaderboard('school'); renderStudentLessons();
+        }
+      }
+    }, 3000);
+  } else {
+    toast('❌ فشل الاتصال بقاعدة البيانات', 'err');
+  }
+}
+
+// ============ نظام عرض الملفات ============
+function showFileUpload() {
+  showModal(`
+    <h2>📁 استعراض من الكمبيوتر</h2>
+    <p style="margin-bottom:15px; opacity:.8">اختر نوع الملف:</p>
+    
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin:20px 0">
+      <div class="card" style="text-align:center; cursor:pointer; padding:20px" onclick="triggerFileInput('image/*')">
+        <div style="font-size:3em; margin-bottom:10px">🖼️</div>
+        <h3>صور</h3>
+        <p style="font-size:.85em; opacity:.7">JPG, PNG, GIF</p>
+      </div>
+      
+      <div class="card" style="text-align:center; cursor:pointer; padding:20px" onclick="triggerFileInput('video/*')">
+        <div style="font-size:3em; margin-bottom:10px">🎥</div>
+        <h3>فيديو</h3>
+        <p style="font-size:.85em; opacity:.7">MP4, WEBM</p>
+      </div>
+      
+      <div class="card" style="text-align:center; cursor:pointer; padding:20px" onclick="triggerFileInput('.pdf')">
+        <div style="font-size:3em; margin-bottom:10px">📄</div>
+        <h3>PDF</h3>
+        <p style="font-size:.85em; opacity:.7">مستندات PDF</p>
+      </div>
+    </div>
+    
+    <div style="margin-top:20px; padding:15px; background:rgba(255,214,10,.1); border-radius:10px; border:1px solid rgba(255,214,10,.3)">
+      <p style="font-size:.9em; opacity:.8">
+        💡 <strong>لعرض PowerPoint بشكل كامل:</strong><br>
+        استخدم زر "🔗 عرض من رابط" وارفع الملف على Google Drive أو OneDrive
+      </p>
+    </div>
+    
+    <input type="file" id="fileInput" style="display:none" onchange="handleLocalFile(event)">
+    
+    <div class="flex-center" style="margin-top:20px">
+      <button class="btn btn-secondary" onclick="closeModal()">❌ إلغاء</button>
+    </div>
+  `);
+}
+
+function triggerFileInput(accept) {
+  const input = document.getElementById('fileInput');
+  input.accept = accept;
+  input.click();
+}
+
+function handleLocalFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const viewer = document.getElementById('presentationViewer');
+  const url = URL.createObjectURL(file);
+  
+  if (file.type.startsWith('image/')) {
+    viewer.innerHTML = `<img src="${url}" alt="${file.name}" style="max-width:100%; max-height:100%; object-fit:contain;">`;
+    toast('✅ تم تحميل الصورة');
+  } else if (file.type.startsWith('video/')) {
+    viewer.innerHTML = `<video controls style="max-width:100%; max-height:100%;"><source src="${url}" type="${file.type}"></video>`;
+    toast('✅ تم تحميل الفيديو');
+  } else if (file.type === 'application/pdf') {
+    viewer.innerHTML = `<iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>`;
+    toast('✅ تم تحميل PDF');
+  } else {
+    toast('❌ نوع الملف غير مدعوم', 'err');
+  }
+  
+  closeModal();
+}
+
+function showLinkInput() {
+  showModal(`
+    <h2>🔗 عرض من رابط</h2>
+    <p style="margin-bottom:15px; opacity:.8">
+      ارفع الملف على Google Drive أو OneDrive، شاركه كـ "أي شخص لديه الرابط"، ثم الصق الرابط هنا
+    </p>
+    
+    <label>📎 رابط الملف:</label>
+    <input type="text" id="presentationLink" placeholder="https://drive.google.com/... أو https://1drv.ms/...">
+    
+    <div style="margin-top:15px; padding:15px; background:rgba(255,214,10,.1); border-radius:10px; border:1px solid rgba(255,214,10,.3)">
+      <h3 style="font-size:1em; margin-bottom:10px">💡 كيفية الحصول على الرابط:</h3>
+      <p style="font-size:.9em; opacity:.8; line-height:1.6">
+        <strong>Google Drive:</strong><br>
+        1. ارفع الملف على Google Drive<br>
+        2. اضغط كليك يمين → "مشاركة"<br>
+        3. اختر "أي شخص لديه الرابط"<br>
+        4. انسخ الرابط والصقه هنا<br><br>
+        
+        <strong>OneDrive:</strong><br>
+        1. ارفع الملف على OneDrive<br>
+        2. اضغط "مشاركة"<br>
+        3. اختر "أي شخص لديه الرابط"<br>
+        4. انسخ الرابط والصقه هنا
+      </p>
+    </div>
+    
+    <div class="flex-center" style="margin-top:20px">
+      <button class="btn btn-success" onclick="loadFromLink()">🚀 عرض</button>
+      <button class="btn btn-secondary" onclick="closeModal()">❌ إلغاء</button>
+    </div>
+  `);
+}
+
+function loadFromLink() {
+  const link = document.getElementById('presentationLink').value.trim();
+  if (!link) return toast('❌ أدخل رابط الملف', 'err');
+  
+  const viewer = document.getElementById('presentationViewer');
+  
+  // تحويل رابط Google Drive
+  if (link.includes('drive.google.com')) {
+    const match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) {
+      const fileId = match[1];
+      const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+      viewer.innerHTML = `<iframe src="${embedUrl}" style="width:100%; height:100%; border:none;" allow="autoplay"></iframe>`;
+      closeModal();
+      toast('✅ تم تحميل العرض من Google Drive');
+    } else {
+      toast('❌ رابط Google Drive غير صحيح', 'err');
+    }
+  }
+  // تحويل رابط OneDrive
+  else if (link.includes('1drv.ms') || link.includes('onedrive')) {
+    const embedUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(link)}`;
+    viewer.innerHTML = `<iframe src="${embedUrl}" style="width:100%; height:100%; border:none;" allow="autoplay"></iframe>`;
+    closeModal();
+    toast('✅ تم تحميل العرض من OneDrive');
+  }
+  // رابط مباشر
+  else if (link.includes('http')) {
+    const embedUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(link)}`;
+    viewer.innerHTML = `<iframe src="${embedUrl}" style="width:100%; height:100%; border:none;" allow="autoplay"></iframe>`;
+    closeModal();
+    toast('✅ تم تحميل العرض');
+  }
+  else {
+    toast('❌ رابط غير صحيح', 'err');
+  }
+}
+
+// باقي الدوال (نفس الكود السابق)
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function backToLogin() { showScreen('loginScreen'); }
+function logout() {
+  currentUser = null;
+  if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+  showScreen('loginScreen');
+}
+
+function showLogin(role) {
+  currentAuthRole = role;
+  const titles = {teacher:'👨‍🏫 دخول المدرس', leader:'👑 دخول قائد الفريق', student:'🎓 دخول الطالب'};
+  document.getElementById('authTitle').innerText = titles[role];
+  document.getElementById('authUser').placeholder = '👤 اسم المستخدم';
+  document.getElementById('authUser').value = role === 'teacher' ? 'ahmed' : '';
+  document.getElementById('authPass').value = '';
+  document.getElementById('registerLink').style.display = (role === 'student' || role === 'teacher') ? 'block' : 'none';
+  showScreen('authScreen');
+}
+
+function showRegister() {
+  document.getElementById('registerTitle').innerText = currentAuthRole === 'teacher' ? '👨‍🏫 تسجيل مدرس جديد' : '📝 تسجيل طالب جديد';
+  document.getElementById('registerForm').innerHTML = currentAuthRole === 'teacher' ? `
+    <input type="text" id="regTeacherName" placeholder="👤 اسم المستخدم">
+    <input type="password" id="regTeacherPass" placeholder="🔑 كلمة المرور">
+    <input type="password" id="regTeacherPassConfirm" placeholder="🔑 تأكيد كلمة المرور">
+    <div class="flex-center">
+      <button class="btn btn-success" onclick="doRegisterTeacher()">✅ تسجيل</button>
+      <button class="btn btn-secondary" onclick="backToLogin()">🔙 رجوع</button>
+    </div>
+  ` : `
+    <input type="text" id="regName" placeholder="👤 اسمك الكامل">
+    <input type="text" id="regClass" placeholder="🏫 فصلك (مثال: الصف الأول أ)">
+    <input type="password" id="regPass" placeholder="🔑 كلمة مرور">
+    <input type="password" id="regPassConfirm" placeholder="🔑 تأكيد كلمة المرور">
+    <div class="flex-center">
+      <button class="btn btn-success" onclick="doRegisterStudent()">✅ تسجيل</button>
+      <button class="btn btn-secondary" onclick="backToLogin()">🔙 رجوع</button>
+    </div>
+  `;
+  showScreen('registerScreen');
+}
+
+async function doRegisterTeacher() {
+  const name = document.getElementById('regTeacherName').value.trim();
+  const pass = document.getElementById('regTeacherPass').value;
+  const passConfirm = document.getElementById('regTeacherPassConfirm').value;
+  if (!name || !pass) return toast('❌ أدخل كل البيانات', 'err');
+  if (pass !== passConfirm) return toast('❌ كلمة المرور مش متطابقة', 'err');
+  if (pass.length < 4) return toast('❌ كلمة المرور لازم تكون 4 حروف على الأقل', 'err');
+  if (DB.teachers.find(t => t.user === name)) return toast('❌ اسم المستخدم موجود قبل كده', 'err');
+  DB.teachers.push({ user: escapeHtml(name), pass: pass });
+  await save();
+  toast('✅ تم تسجيل المدرس بنجاح!');
+  currentUser = {role:'teacher', name:name};
+  loadTeacher();
+  showScreen('teacherScreen');
+}
+
+async function doRegisterStudent() {
+  const name = document.getElementById('regName').value.trim();
+  const className = document.getElementById('regClass').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const passConfirm = document.getElementById('regPassConfirm').value;
+  if (!name || !className || !pass) return toast('❌ أدخل كل البيانات', 'err');
+  if (pass !== passConfirm) return toast('❌ كلمة المرور مش متطابقة', 'err');
+  if (pass.length < 4) return toast('❌ كلمة المرور لازم تكون 4 حروف على الأقل', 'err');
+  if (DB.students.find(s => s.name === name && s.className === className)) return toast('❌ الطالب مسجل قبل كده', 'err');
+  const hashedPass = btoa(pass);
+  DB.students.push({ id: Date.now(), name: escapeHtml(name), className: escapeHtml(className), password: hashedPass, registeredAt: new Date().toISOString() });
+  await save();
+  localStorage.setItem('studentAuth', JSON.stringify({ name, className, password: hashedPass }));
+  toast('✅ تم التسجيل بنجاح!');
+  currentUser = {role:'student', name, className};
+  loadStudent();
+  showScreen('studentScreen');
+}
+
+async function doLogin() {
+  const u = document.getElementById('authUser').value.trim();
+  const p = document.getElementById('authPass').value.trim();
+  if (!u || !p) return toast('❌ أدخل البيانات كاملة', 'err');
+
+  if (currentAuthRole === 'teacher') {
+    const t = DB.teachers.find(x => x.user === u && x.pass === p);
+    if (!t) return toast('❌ بيانات المدرس غلط', 'err');
+    currentUser = {role:'teacher', name:u};
+    loadTeacher();
+    showScreen('teacherScreen');
+  } else if (currentAuthRole === 'leader') {
+    const g = DB.groups.find(x => x.name === u && x.password === p);
+    if (!g) return toast('❌ اسم الفريق أو كلمة المرور غلط', 'err');
+    currentUser = {role:'leader', name:u, groupId:g.id};
+    loadLeader();
+    showScreen('leaderScreen');
+  } else {
+    const savedAuth = localStorage.getItem('studentAuth');
+    if (savedAuth) {
+      const auth = JSON.parse(savedAuth);
+      if (auth.name === u && auth.password === btoa(p)) {
+        currentUser = {role:'student', name:auth.name, className:auth.className};
+        loadStudent();
+        showScreen('studentScreen');
+        return;
+      }
+    }
+    const student = DB.students.find(s => s.name === u && s.password === btoa(p));
+    if (!student) return toast('❌ اسم المستخدم أو كلمة المرور غلط', 'err');
+    localStorage.setItem('studentAuth', JSON.stringify({ name: student.name, className: student.className, password: student.password }));
+    currentUser = {role:'student', name:student.name, className:student.className};
+    loadStudent();
+    showScreen('studentScreen');
+  }
+}
+
+function loadTeacher() {
+  document.getElementById('teacherDisplayName').textContent = currentUser.name;
+  renderTeacherStats(); renderClasses(); renderGroups(); renderQuestions();
+  renderCards(); renderDrawWheel(); updatePointsView(); renderLog();
+  renderLeaderboard('school'); updateClassFilters(); renderLessons();
+  renderStudents(); renderSidebar(); renderThemeGrid();
+}
+
+function switchTab(name, e) {
+  document.querySelectorAll('#teacherScreen .tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#teacherScreen .tab-content').forEach(t => t.style.display = 'none');
+  e.currentTarget.classList.add('active');
+  document.getElementById('tab-'+name).style.display = 'block';
+  if (name === 'leaderboard') renderLeaderboard('school');
+  if (name === 'points') updatePointsView();
+  if (name === 'groups') renderGroups();
+  if (name === 'draw') resetDraw();
+  if (name === 'log') renderLog();
+  if (name === 'lessons') renderLessons();
+  if (name === 'students') renderStudents();
+  if (name === 'home') renderSidebar();
+  if (name === 'settings') renderThemeGrid();
+}
+
+function renderTeacherStats() {
+  const totalScore = DB.groups.reduce((s,g) => s + (g.score||0), 0);
+  document.getElementById('teacherStats').innerHTML = `
+    <div class="stat-box"><div class="stat-icon">🏫</div><div class="stat-value">${DB.classes.length}</div><div class="stat-label">الفصول</div></div>
+    <div class="stat-box"><div class="stat-icon">👥</div><div class="stat-value">${DB.groups.length}</div><div class="stat-label">المجموعات</div></div>
+    <div class="stat-box"><div class="stat-icon">🎓</div><div class="stat-value">${DB.students.length}</div><div class="stat-label">الطلاب</div></div>
+    <div class="stat-box"><div class="stat-icon">📚</div><div class="stat-value">${DB.lessons.length}</div><div class="stat-label">الدروس</div></div>
+    <div class="stat-box"><div class="stat-icon">💎</div><div class="stat-value">${totalScore}</div><div class="stat-label">إجمالي النقاط</div></div>
+  `;
+}
+
+async function addClass() {
+  const name = document.getElementById('newClassName').value.trim();
+  if (!name) return toast('❌ أدخل اسم الفصل', 'err');
+  if (DB.classes.find(c => c.name === name)) return toast('❌ الفصل موجود', 'err');
+  DB.classes.push({id: Date.now(), name: escapeHtml(name)});
+  await save();
+  document.getElementById('newClassName').value = '';
+  toast('✅ تم إضافة الفصل');
+}
+
+function renderClasses() {
+  const list = document.getElementById('classesList');
+  if (!DB.classes.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">🏫</div><p>لا توجد فصول بعد</p></div>';
+    return;
+  }
+  list.innerHTML = DB.classes.map(c => {
+    const groups = DB.groups.filter(g => g.classId === c.id);
+    const totalScore = groups.reduce((s,g) => s + (g.score||0), 0);
+    return `<div class="class-card">
+      <div class="class-header">
+        <div class="class-name"><span>🏫</span><span>${escapeHtml(c.name)}</span></div>
+        <button class="btn btn-danger btn-sm" onclick="deleteClass(${c.id})">🗑️</button>
+      </div>
+      <div class="class-stats">
+        <div class="stat"><div class="stat-value">${groups.length}</div><div class="stat-label">👥 المجموعات</div></div>
+        <div class="stat"><div class="stat-value">${totalScore}</div><div class="stat-label">💎 النقاط</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function deleteClass(id) {
+  if (!confirm('⚠️ حذف الفصل وجميع مجموعاته؟')) return;
+  DB.classes = DB.classes.filter(c => c.id !== id);
+  DB.groups = DB.groups.filter(g => g.classId !== id);
+  await save();
+  toast('✅ تم الحذف');
+}
+
+function updateClassFilters() {
+  const opts = DB.classes.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+  document.getElementById('groupClassFilter').innerHTML = '<option value="">📚 كل الفصول</option>' + opts;
+  const pc = document.getElementById('pointsClass');
+  if (pc) pc.innerHTML = '<option value="">📚 اختر الفصل</option>' + opts;
+  const lb = document.getElementById('lbClassFilter');
+  if (lb) lb.innerHTML = '<option value="">📚 اختر الفصل</option>' + opts;
+  const sf = document.getElementById('studentClassFilter');
+  if (sf) sf.innerHTML = '<option value="">📚 اختر الفصل</option>' + opts;
+  const lc = document.getElementById('lessonClass');
+  if (lc) lc.innerHTML = '<option value="">🏫 اختر الفصل</option>' + opts;
+}
+
+function showAddGroupModal() {
+  if (!DB.classes.length) return toast('❌ أضف فصلاً أولاً', 'err');
+  showModal(`
+    <h2>➕ مجموعة جديدة</h2>
+    <label>🏫 الفصل:</label>
+    <select id="mgClass">${DB.classes.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('')}</select>
+    <label>👥 اسم المجموعة:</label>
+    <input type="text" id="mgName" placeholder="مثال: مجموعة النجوم">
+    <label>🔢 رقم المجموعة:</label>
+    <input type="number" id="mgNumber" placeholder="مثال: 1" value="1">
+    <label>🔑 كلمة مرور القائد:</label>
+    <input type="text" id="mgPass" placeholder="كلمة المرور">
+    <div class="flex-center">
+      <button class="btn btn-success" onclick="confirmAddGroup()">✅ حفظ</button>
+      <button class="btn btn-secondary" onclick="closeModal()">❌ إلغاء</button>
+    </div>
+  `);
+}
+
+async function confirmAddGroup() {
+  const classId = parseInt(document.getElementById('mgClass').value);
+  const name = document.getElementById('mgName').value.trim();
+  const groupNumber = parseInt(document.getElementById('mgNumber').value) || 1;
+  const pass = document.getElementById('mgPass').value.trim();
+  if (!name) return toast('❌ أدخل اسم المجموعة', 'err');
+  if (!pass) return toast('❌ أدخل كلمة مرور القائد', 'err');
+  DB.groups.push({ id: Date.now(), name: escapeHtml(name), groupNumber, classId, score: 0, password: pass, cardsDrawn: 0 });
+  await save(); closeModal();
+  toast('✅ تم إضافة المجموعة');
+}
+
+function renderGroups() {
+  const filter = document.getElementById('groupClassFilter');
+  const classId = filter.value ? parseInt(filter.value) : null;
+  let groups = DB.groups;
+  if (classId) groups = groups.filter(g => g.classId === classId);
+  const list = document.getElementById('groupsList');
+  if (!groups.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><p>لا توجد مجموعات</p></div>';
+    return;
+  }
+  const maxScore = Math.max(...groups.map(g => g.score||0), 0);
+  list.innerHTML = groups.map(g => {
+    const cls = DB.classes.find(c => c.id === g.classId);
+    const isCrown = (g.score||0) === maxScore && maxScore > 0;
+    return `<div class="group-card ${isCrown ? 'crown' : ''}">
+      ${isCrown ? '<div class="crown-badge">👑</div>' : ''}
+      <div class="group-name">${escapeHtml(g.name)}</div>
+      <div class="group-info">
+        <span>🏫 ${cls ? escapeHtml(cls.name) : 'غير محدد'}</span>
+        <span>🔢 رقم ${g.groupNumber}</span>
+      </div>
+      <div class="group-score">${g.score||0}</div>
+      <div style="text-align:center; font-size:.85em; opacity:.8">🔑 ${escapeHtml(g.password)}</div>
+      <div class="actions">
+        <button class="btn btn-danger btn-sm" onclick="deleteGroup(${g.id})">🗑️ حذف</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function deleteGroup(id) {
+  if (!confirm('⚠️ حذف المجموعة؟')) return;
+  DB.groups = DB.groups.filter(g => g.id !== id);
+  await save();
+  toast('✅ تم الحذف');
+}
+
+async function addQuestion() {
+  const text = document.getElementById('qText').value.trim();
+  const inputs = document.querySelectorAll('.q-option-input');
+  const options = Array.from(inputs).map(i => i.value.trim());
+  const correct = parseInt(document.getElementById('qCorrect').value);
+  const points = parseInt(document.getElementById('qPoints').value) || 10;
+  if (!text) return toast('❌ أدخل نص السؤال', 'err');
+  if (options.some(o => !o)) return toast('❌ أكمل كل الخيارات', 'err');
+  DB.questions.push({id: Date.now(), text: escapeHtml(text), options: options.map(o => escapeHtml(o)), correct, points});
+  await save();
+  document.getElementById('qText').value = '';
+  inputs.forEach(i => i.value = '');
+  toast('✅ تم إضافة السؤال');
+}
+
+function renderQuestions() {
+  const list = document.getElementById('questionsList');
+  if (!DB.questions.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">❓</div><p>لا توجد أسئلة</p></div>';
+    return;
+  }
+  list.innerHTML = DB.questions.map(q => `<div class="question-item">
+    <div class="q-text">❓ ${q.text}</div>
+    <div class="q-options">
+      ${q.options.map((o, i) => `<div class="q-option ${i === q.correct ? 'correct' : ''}">${['🅰️','🅱️','🅲️','🅳️'][i]} ${o}</div>`).join('')}
+    </div>
+    <div class="q-points">💎 ${q.points}</div>
+    <button class="btn btn-danger btn-sm" onclick="deleteQuestion(${q.id})" style="float:left">🗑️</button>
+  </div>`).join('');
+}
+
+async function deleteQuestion(id) {
+  if (!confirm('⚠️ حذف السؤال؟')) return;
+  DB.questions = DB.questions.filter(q => q.id !== id);
+  await save();
+}
+
+async function addCard() {
+  const type = document.getElementById('cardType').value;
+  const title = document.getElementById('cardTitle').value.trim();
+  const desc = document.getElementById('cardDesc').value.trim();
+  const points = parseInt(document.getElementById('cardPoints').value) || 0;
+  if (!title) return toast('❌ أدخل عنوان الكارت', 'err');
+  DB.cards.push({id: Date.now(), type, title: escapeHtml(title), desc: escapeHtml(desc), points});
+  await save();
+  document.getElementById('cardTitle').value = '';
+  document.getElementById('cardDesc').value = '';
+  document.getElementById('cardPoints').value = '';
+  toast('✅ تم إضافة الكارت');
+}
+
+function renderCards() {
+  const list = document.getElementById('cardsList');
+  if (!DB.cards.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">🎴</div><p>لا توجد كروت</p></div>';
+    return;
+  }
+  const typeIcons = {question:'❓', bonus:'🎁', challenge:'⚔️', trap:'⚠️', special:'✨'};
+  const typeNames = {question:'سؤال', bonus:'بونص', challenge:'تحدي', trap:'فخ', special:'خاص'};
+  list.innerHTML = DB.cards.map(c => `<div class="question-item">
+    <div class="q-text">${typeIcons[c.type]||'🎴'} ${c.title}</div>
+    <div style="opacity:.9; margin:8px 0">${c.desc || '(بدون شرح)'}</div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap">
+      <span class="badge badge-info">${typeNames[c.type]||'كارت'}</span>
+      ${c.points ? `<span class="badge badge-warning">💎 ${c.points}</span>` : ''}
+    </div>
+    <button class="btn btn-danger btn-sm" onclick="deleteCard(${c.id})" style="float:left">🗑️</button>
+  </div>`).join('');
+}
+
+async function deleteCard(id) {
+  if (!confirm('⚠️ حذف الكارت؟')) return;
+  DB.cards = DB.cards.filter(c => c.id !== id);
+  await save();
+}
+
+function renderDrawWheel() {
+  const wheel = document.getElementById('drawWheel');
+  if (!wheel) return;
+  if (!DB.cards.length) {
+    wheel.style.background = '#666';
+    return;
+  }
+  const colors = ['#e63946','#06a77d','#ffd60a','#457b9d','#f77f00','#8338ec','#fb5607','#3a86ff','#ff006e','#80ed99'];
+  const n = DB.cards.length;
+  let grad = 'conic-gradient(';
+  for (let i = 0; i < n; i++) {
+    const start = (i * 360 / n);
+    const end = ((i+1) * 360 / n);
+    grad += `${colors[i % colors.length]} ${start}deg ${end}deg${i<n-1?',':''}`;
+  }
+  grad += ')';
+  wheel.style.background = grad;
+  wheel.style.transform = 'rotate(0deg)';
+}
+
+function resetDraw() {
+  currentDraw = { card:null, group:null };
+  document.getElementById('drawStep1').style.display = 'block';
+  document.getElementById('drawStep2').style.display = 'none';
+  document.getElementById('drawStep3').style.display = 'none';
+  renderDrawWheel();
+}
+
+function spinDrawWheel() {
+  if (!DB.cards.length) return toast('❌ أضف كروت أولاً', 'err');
+  if (!DB.groups.length) return toast('❌ لا توجد مجموعات', 'err');
+  const wheel = document.getElementById('drawWheel');
+  const idx = Math.floor(Math.random() * DB.cards.length);
+  const n = DB.cards.length;
+  const segAngle = 360 / n;
+  const targetAngle = 360*6 + (360 - (idx * segAngle + segAngle/2));
+  wheel.style.transition = 'transform 5s cubic-bezier(.17,.67,.21,.99)';
+  wheel.style.transform = `rotate(${targetAngle}deg)`;
+  setTimeout(() => {
+    currentDraw.card = DB.cards[idx];
+    showDrawStep2();
+  }, 5100);
+}
+
+function showDrawStep2() {
+  document.getElementById('drawStep1').style.display = 'none';
+  document.getElementById('drawStep2').style.display = 'block';
+  const typeIcons = {question:'❓ سؤال', bonus:'🎁 بونص', challenge:'⚔️ تحدي', trap:'⚠️ فخ', special:'✨ خاص'};
+  document.getElementById('pendingType').innerText = typeIcons[currentDraw.card.type] || '🎴 كارت';
+  const sel = document.getElementById('drawGroupSelect');
+  sel.innerHTML = DB.groups.map(g => {
+    const cls = DB.classes.find(c => c.id === g.classId);
+    return `<option value="${g.id}">${escapeHtml(g.name)} - ${cls?escapeHtml(cls.name):''} (رقم ${g.groupNumber})</option>`;
+  }).join('');
+}
+
+async function sendCardToGroup() {
+  const gid = parseInt(document.getElementById('drawGroupSelect').value);
+  currentDraw.group = DB.groups.find(g => g.id === gid);
+  DB.pendingCards[currentDraw.group.id] = { id: Date.now(), card: currentDraw.card, groupId: currentDraw.group.id, groupName: currentDraw.group.name, timestamp: Date.now(), viewed: false };
+  addLog('card-draw', `📤 تم إرسال كارت "${currentDraw.card.title}" لـ ${currentDraw.group.name}`);
+  await save();
+  document.getElementById('drawStep2').style.display = 'none';
+  document.getElementById('drawStep3').style.display = 'block';
+  document.getElementById('sentGroupName').innerText = currentDraw.group.name;
+  toast(`✅ تم إرسال الكارت لـ ${currentDraw.group.name}`);
+}
+
+function updatePointsView() {
+  updatePointsGroups();
+  document.getElementById('plusRow').innerHTML = DB.plusValues.map(v => `<button class="points-btn plus" onclick="addPoints(${v})">➕ ${v}</button>`).join('');
+  document.getElementById('minusRow').innerHTML = DB.minusValues.map(v => `<button class="points-btn minus" onclick="addPoints(${-v})">➖ ${v}</button>`).join('');
+  showCurrentScore();
+}
+
+function updatePointsGroups() {
+  const classId = document.getElementById('pointsClass').value;
+  const sel = document.getElementById('pointsGroup');
+  let groups = DB.groups;
+  if (classId) groups = groups.filter(g => g.classId == classId);
+  sel.innerHTML = '<option value="">👥 اختر المجموعة</option>' + groups.map(g => `<option value="${g.id}">${escapeHtml(g.name)} (رقم ${g.groupNumber})</option>`).join('');
+  showCurrentScore();
+}
+
+function showCurrentScore() {
+  const sel = document.getElementById('pointsGroup');
+  const g = DB.groups.find(x => x.id == sel.value);
+  document.getElementById('currentScore').innerText = g ? (g.score||0) : 0;
+}
+
+async function addPoints(v) {
+  const sel = document.getElementById('pointsGroup');
+  const g = DB.groups.find(x => x.id == sel.value);
+  if (!g) return toast('❌ اختر مجموعة', 'err');
+  g.score = (g.score||0) + v;
+  await save();
+  showCurrentScore();
+  addLog(v>0?'points-plus':'points-minus', `${g.name} ${v>0?'+':''}${v}`);
+  toast(`${v>0?'➕':'➖'} ${Math.abs(v)} لـ ${g.name}`);
+}
+
+async function addCustomPoints(sign) {
+  const v = parseInt(document.getElementById('customPoints').value);
+  if (isNaN(v)) return toast('❌ أدخل رقم', 'err');
+  await addPoints(v * sign);
+  document.getElementById('customPoints').value = '';
+}
+
+function addLog(type, message) {
+  DB.log = DB.log || [];
+  DB.log.unshift({ type, message, time: new Date().toLocaleString('ar-EG'), timestamp: Date.now() });
+  if (DB.log.length > 100) DB.log = DB.log.slice(0, 100);
+}
+
+function renderLog() {
+  const list = document.getElementById('logList');
+  const log = DB.log || [];
+  if (!log.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📜</div><p>السجل فارغ</p></div>';
+    return;
+  }
+  const icons = {'points-plus':'➕', 'points-minus':'➖', 'card-draw':'🎴'};
+  list.innerHTML = log.map(l => `<div class="log-item ${l.type}">
+    <div class="log-icon">${icons[l.type] || '📝'}</div>
+    <div class="log-content">${escapeHtml(l.message)}</div>
+    <div class="log-time">${l.time}</div>
+  </div>`).join('');
+}
+
+async function clearLog() {
+  if (!confirm('⚠️ مسح كل السجل؟')) return;
+  DB.log = [];
+  await save();
+  toast('✅ تم المسح');
+}
+
+function renderLeaderboard(type) {
+  const lbFilter = document.getElementById('lbClassFilter');
+  if (type === 'class') {
+    lbFilter.style.display = 'block';
+    const classId = lbFilter.value;
+    if (!classId) {
+      document.getElementById('leaderboardList').innerHTML = '<div class="empty-state"><div class="empty-icon">📚</div><p>اختر فصلاً</p></div>';
+      return;
+    }
+    const sorted = DB.groups.filter(g => g.classId == classId).sort((a,b) => (b.score||0) - (a.score||0));
+    renderLeaderboardList(sorted, 'leaderboardList');
+  } else {
+    lbFilter.style.display = 'none';
+    const sorted = [...DB.groups].sort((a,b) => (b.score||0) - (a.score||0));
+    renderLeaderboardList(sorted, 'leaderboardList');
+  }
+}
+
+function renderLeaderboardList(sorted, targetId) {
+  const list = document.getElementById(targetId);
+  if (!sorted.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">🏆</div><p>لا توجد مجموعات</p></div>';
+    return;
+  }
+  const medals = ['🥇','🥈','🥉'];
+  const classes = ['first','second','third'];
+  list.innerHTML = sorted.map((g,i) => {
+    const cls = DB.classes.find(c => c.id === g.classId);
+    return `<div class="lb-item ${i<3 ? classes[i] : ''}">
+      <div class="rank">${i<3 ? medals[i] : (i+1)}</div>
+      <div class="name">${escapeHtml(g.name)} ${i===0 && (g.score||0)>0 ? '👑' : ''}</div>
+      <div class="class-tag">🏫 ${cls ? escapeHtml(cls.name) : 'غير محدد'}</div>
+      <div style="font-size:.85em; opacity:.8">🔢 رقم ${g.groupNumber}</div>
+      <div class="score">${g.score||0}</div>
+    </div>`;
+  }).join('');
+}
+
+function loadLeader() {
+  const g = DB.groups.find(x => x.id === currentUser.groupId);
+  if (!g) return;
+  const cls = DB.classes.find(c => c.id === g.classId);
+  document.getElementById('leaderName').innerText = currentUser.name;
+  document.getElementById('leaderGroupInfo').innerText = `${g.name} - ${cls ? cls.name : ''} - رقم ${g.groupNumber}`;
+  document.getElementById('leaderScore').innerText = g.score||0;
+  const classGroups = DB.groups.filter(x => x.classId === g.classId).sort((a,b) => (b.score||0) - (a.score||0));
+  document.getElementById('leaderClassRank').innerText = classGroups.findIndex(x => x.id === g.id) + 1;
+  const allGroups = [...DB.groups].sort((a,b) => (b.score||0) - (a.score||0));
+  document.getElementById('leaderSchoolRank').innerText = allGroups.findIndex(x => x.id === g.id) + 1;
+  renderLeaderCard();
+}
+
+function switchLeaderTab(name, e) {
+  document.querySelectorAll('#leaderScreen .tab').forEach(t => t.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+  document.getElementById('leaderTab-card').style.display = name === 'card' ? 'block' : 'none';
+  document.getElementById('leaderTab-info').style.display = name === 'info' ? 'block' : 'none';
+  document.getElementById('leaderTab-lessons').style.display = name === 'lessons' ? 'block' : 'none';
+  if (name === 'info') loadLeader();
+  if (name === 'lessons') renderLeaderLessons();
+}
+
+function renderLeaderCard() {
+  const area = document.getElementById('leaderCardArea');
+  if (!area) return;
+  const pending = DB.pendingCards[currentUser.groupId];
+  if (!pending) {
+    area.innerHTML = `<div class="waiting-card">
+      <div class="wait-icon">⏳</div>
+      <h2 style="color:var(--accent)">في انتظار كارت جديد</h2>
+      <p style="opacity:.8; margin-top:10px">المستر هيبعتلك كارت، استنى شوية</p>
+    </div>`;
+    return;
+  }
+  if (pending.viewed) {
+    area.innerHTML = `<div class="card" style="text-align:center">
+      <div style="font-size:3em; margin-bottom:10px">✅</div>
+      <h2>آخر كارت تم كشفه</h2>
+      ${renderCardDisplay(pending.card)}
+      <p style="opacity:.7; margin-top:15px; font-size:.9em">تم الإرسال: ${new Date(pending.timestamp).toLocaleString('ar-EG')}</p>
+    </div>`;
+    return;
+  }
+  area.innerHTML = `<div class="new-card-alert">
+    <div style="font-size:3em; margin-bottom:10px">🎉</div>
+    <h2 style="color:var(--primary); margin:10px 0">كارت جديد وصلك!</h2>
+    <p style="color:var(--primary); opacity:.9">اضغط عشان تشوف الكارت</p>
+  </div>
+  <div class="card" style="text-align:center">
+    <button class="btn btn-lg glow" onclick="viewCard()">🔓 كشف الكارت</button>
+  </div>`;
+}
+
+async function viewCard() {
+  const pending = DB.pendingCards[currentUser.groupId];
+  if (!pending) return;
+  pending.viewed = true;
+  await save();
+  const area = document.getElementById('leaderCardArea');
+  area.innerHTML = `<div class="card" style="text-align:center">
+    <h2>🎴 الكارت بتاعك</h2>
+    ${renderCardDisplay(pending.card)}
+    <div class="flex-center" style="margin-top:20px">
+      <button class="btn btn-success btn-lg" onclick="confirmCardDone(true)">✅ تم التنفيذ</button>
+      <button class="btn btn-danger" onclick="confirmCardDone(false)">❌ لم يُنفذ</button>
+    </div>
+  </div>`;
+}
+
+function renderCardDisplay(card) {
+  const typeIcons = {question:'❓', bonus:'🎁', challenge:'⚔️', trap:'⚠️', special:'✨'};
+  const typeNames = {question:'سؤال', bonus:'بونص نقاط', challenge:'تحدي', trap:'فخ / ماينص', special:'كارت خاص'};
+  const typeColors = { question:'linear-gradient(135deg, #457b9d, #1d3557)', bonus:'linear-gradient(135deg, #06a77d, #005f73)', challenge:'linear-gradient(135deg, #f77f00, #e63946)', trap:'linear-gradient(135deg, #e63946, #9d0208)', special:'linear-gradient(135deg, #8338ec, #3a86ff)' };
+  return `<div class="revealed-card show" style="background:${typeColors[card.type]}; color:#fff">
+    <div class="card-type">${typeIcons[card.type]} ${typeNames[card.type]}</div>
+    <div class="card-title">${escapeHtml(card.title)}</div>
+    <div class="card-desc">${escapeHtml(card.desc || '(لا يوجد شرح)')}</div>
+    ${card.points ? `<div class="card-points">💎 ${card.points} نقطة</div>` : ''}
+  </div>`;
+}
+
+async function confirmCardDone(done) {
+  const pending = DB.pendingCards[currentUser.groupId];
+  if (!pending) return;
+  const g = DB.groups.find(x => x.id === currentUser.groupId);
+  if (done && pending.card.points) {
+    g.score = (g.score||0) + pending.card.points;
+    addLog('points-plus', `${g.name} +${pending.card.points} من كارت ${pending.card.title}`);
+    toast(`✅ +${pending.card.points} نقطة`);
+  } else if (!done) {
+    addLog('points-minus', `${g.name} لم ينفذ كارت ${pending.card.title}`);
+    toast('❌ لم يُنفذ');
+  }
+  delete DB.pendingCards[currentUser.groupId];
+  await save();
+  loadLeader();
+}
+
+function renderLeaderLessons() {
+  const g = DB.groups.find(x => x.id === currentUser.groupId);
+  if (!g) return;
+  const lessons = DB.lessons.filter(l => l.classId === g.classId);
+  const list = document.getElementById('leaderLessonsList');
+  if (!lessons.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📚</div><p>لا توجد دروس</p></div>';
+    return;
+  }
+  list.innerHTML = lessons.map(l => `<div class="lesson-card">
+    <div class="lesson-icon">📚</div>
+    <div class="lesson-info">
+      <div class="lesson-title">${escapeHtml(l.title)}</div>
+    </div>
+  </div>`).join('');
+}
+
+function loadStudent() {
+  document.getElementById('studentName').innerText = currentUser.name;
+  updateClassFilters();
+  renderStudentLeaderboard('school');
+}
+
+function switchStudentTab(name, e) {
+  document.querySelectorAll('#studentScreen .tab').forEach(t => t.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+  document.getElementById('studentTab-ranking').style.display = name === 'ranking' ? 'block' : 'none';
+  document.getElementById('studentTab-lessons').style.display = name === 'lessons' ? 'block' : 'none';
+  if (name === 'lessons') renderStudentLessons();
+}
+
+function renderStudentLeaderboard(type) {
+  const filter = document.getElementById('studentClassFilter');
+  if (type === 'class') {
+    filter.style.display = 'block';
+    const classId = filter.value;
+    if (!classId) {
+      document.getElementById('studentLeaderboard').innerHTML = '<div class="empty-state"><div class="empty-icon">📚</div><p>اختر فصلاً</p></div>';
+      return;
+    }
+    const sorted = DB.groups.filter(g => g.classId == classId).sort((a,b) => (b.score||0) - (a.score||0));
+    renderLeaderboardList(sorted, 'studentLeaderboard');
+  } else {
+    filter.style.display = 'none';
+    const sorted = [...DB.groups].sort((a,b) => (b.score||0) - (a.score||0));
+    renderLeaderboardList(sorted, 'studentLeaderboard');
+  }
+}
+
+function renderStudentLessons() {
+  const lessons = DB.lessons.filter(l => {
+    const cls = DB.classes.find(c => c.id === l.classId);
+    return cls && cls.name === currentUser.className;
+  });
+  const list = document.getElementById('studentLessonsList');
+  if (!lessons.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📚</div><p>لا توجد دروس</p></div>';
+    return;
+  }
+  list.innerHTML = lessons.map(l => `<div class="lesson-card">
+    <div class="lesson-icon">📚</div>
+    <div class="lesson-info">
+      <div class="lesson-title">${escapeHtml(l.title)}</div>
+    </div>
+  </div>`).join('');
+}
+
+async function addLesson() {
+  const title = document.getElementById('lessonTitle').value.trim();
+  const classId = document.getElementById('lessonClass').value;
+  if (!title) return toast('❌ أدخل عنوان الدرس', 'err');
+  if (!classId) return toast('❌ اختر الفصل', 'err');
+  DB.lessons.push({ id: Date.now(), title: escapeHtml(title), classId: parseInt(classId), uploadedAt: new Date().toISOString() });
+  await save();
+  document.getElementById('lessonTitle').value = '';
+  document.getElementById('lessonFile').value = '';
+  toast('✅ تم إضافة الدرس');
+}
+
+function renderLessons() {
+  const list = document.getElementById('lessonsList');
+  if (!DB.lessons.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📚</div><p>لا توجد دروس</p></div>';
+    return;
+  }
+  list.innerHTML = DB.lessons.map(l => {
+    const cls = DB.classes.find(c => c.id === l.classId);
+    return `<div class="lesson-card">
+      <div class="lesson-icon">📚</div>
+      <div class="lesson-info">
+        <div class="lesson-title">${escapeHtml(l.title)}</div>
+        <div class="lesson-meta">🏫 ${cls ? escapeHtml(cls.name) : '-'}</div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteLesson(${l.id})">🗑️</button>
+    </div>`;
+  }).join('');
+}
+
+async function deleteLesson(id) {
+  if (!confirm('⚠️ حذف الدرس؟')) return;
+  DB.lessons = DB.lessons.filter(l => l.id !== id);
+  await save();
+  toast('✅ تم الحذف');
+}
+
+function renderStudents() {
+  document.getElementById('totalStudents').textContent = DB.students.length;
+  const list = document.getElementById('studentsList');
+  if (!DB.students.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">🎓</div><p>لا يوجد طلاب مسجلين</p></div>';
+    return;
+  }
+  list.innerHTML = DB.students.map(s => `<div class="student-card">
+    <div class="student-avatar">${escapeHtml(s.name.charAt(0))}</div>
+    <div class="student-info">
+      <div class="student-name">${escapeHtml(s.name)}</div>
+      <div class="student-class">🏫 ${escapeHtml(s.className)}</div>
+    </div>
+    <button class="btn btn-danger btn-sm" onclick="deleteStudent(${s.id})">🗑️</button>
+  </div>`).join('');
+}
+
+async function deleteStudent(id) {
+  if (!confirm('⚠️ حذف الطالب؟')) return;
+  DB.students = DB.students.filter(s => s.id !== id);
+  await save();
+  toast('✅ تم الحذف');
+}
+
+function renderSidebar() {
+  const sidebar = document.getElementById('sidebarGroups');
+  if (!DB.classes.length) {
+    sidebar.innerHTML = '<p style="opacity:.5; text-align:center">لا توجد فصول</p>';
+    return;
+  }
+  sidebar.innerHTML = DB.classes.map(c => {
+    const groups = DB.groups.filter(g => g.classId === c.id);
+    return `<div class="sidebar-class">
+      <div class="sidebar-class-title">🏫 ${escapeHtml(c.name)}</div>
+      ${groups.map(g => `<div class="sidebar-group">
+        <div class="sidebar-group-name">${escapeHtml(g.name)}</div>
+        <div class="sidebar-group-score">${g.score||0}</div>
+        <div class="sidebar-group-btns">
+          <button class="btn-plus" onclick="quickAddPoints(${g.id}, 10)">+</button>
+          <button class="btn-minus" onclick="quickAddPoints(${g.id}, -10)">-</button>
+        </div>
+      </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+async function quickAddPoints(groupId, points) {
+  const g = DB.groups.find(x => x.id === groupId);
+  if (!g) return;
+  g.score = (g.score||0) + points;
+  await save();
+  renderSidebar();
+  toast(`${points>0?'+':''}${points} لـ ${g.name}`);
+}
+
+function openWheelOverlay() {
+  document.getElementById('wheelOverlay').classList.add('show');
+  renderOverlayWheel();
+}
+
+function closeWheelOverlay() {
+  document.getElementById('wheelOverlay').classList.remove('show');
+}
+
+function renderOverlayWheel() {
+  const wheel = document.getElementById('overlayWheel');
+  if (!DB.cards.length) {
+    wheel.style.background = '#666';
+    return;
+  }
+  const colors = ['#e63946','#06a77d','#ffd60a','#457b9d','#f77f00','#8338ec','#fb5607','#3a86ff','#ff006e','#80ed99'];
+  const n = DB.cards.length;
+  let grad = 'conic-gradient(';
+  for (let i = 0; i < n; i++) {
+    const start = (i * 360 / n);
+    const end = ((i+1) * 360 / n);
+    grad += `${colors[i % colors.length]} ${start}deg ${end}deg${i<n-1?',':''}`;
+  }
+  grad += ')';
+  wheel.style.background = grad;
+  wheel.style.transform = 'rotate(0deg)';
+}
+
+function spinOverlayWheel() {
+  if (!DB.cards.length) return toast('❌ أضف كروت أولاً', 'err');
+  const wheel = document.getElementById('overlayWheel');
+  const idx = Math.floor(Math.random() * DB.cards.length);
+  const n = DB.cards.length;
+  const segAngle = 360 / n;
+  const targetAngle = 360*6 + (360 - (idx * segAngle + segAngle/2));
+  wheel.style.transition = 'transform 5s cubic-bezier(.17,.67,.21,.99)';
+  wheel.style.transform = `rotate(${targetAngle}deg)`;
+  setTimeout(() => {
+    const card = DB.cards[idx];
+    const result = document.getElementById('overlayWheelResult');
+    result.innerHTML = `<div class="revealed-card show" style="background:linear-gradient(135deg, var(--accent), var(--warning)); color:var(--primary)">
+      <div class="card-title">${escapeHtml(card.title)}</div>
+      <div class="card-desc">${escapeHtml(card.desc || '')}</div>
+      ${card.points ? `<div class="card-points">💎 ${card.points} نقطة</div>` : ''}
+    </div>
+    <div class="flex-center" style="margin-top:15px">
+      <button class="btn btn-success" onclick="sendOverlayCard(${card.id})">📤 إرسال لقائد</button>
+      <button class="btn btn-secondary" onclick="closeWheelOverlay()">❌ إغلاق</button>
+    </div>`;
+  }, 5100);
+}
+
+async function sendOverlayCard(cardId) {
+  const card = DB.cards.find(c => c.id === cardId);
+  if (!card) return;
+  showModal(`
+    <h2>📤 إرسال الكارت لقائد</h2>
+    <select id="overlayGroupSelect">
+      ${DB.groups.map(g => {
+        const cls = DB.classes.find(c => c.id === g.classId);
+        return `<option value="${g.id}">${escapeHtml(g.name)} - ${cls ? escapeHtml(cls.name) : ''}</option>`;
+      }).join('')}
+    </select>
+    <div class="flex-center" style="margin-top:15px">
+      <button class="btn btn-success" onclick="confirmSendOverlayCard(${cardId})">✅ إرسال</button>
+      <button class="btn btn-secondary" onclick="closeModal()">❌ إلغاء</button>
+    </div>
+  `);
+}
+
+async function confirmSendOverlayCard(cardId) {
+  const card = DB.cards.find(c => c.id === cardId);
+  const gid = parseInt(document.getElementById('overlayGroupSelect').value);
+  const group = DB.groups.find(g => g.id === gid);
+  DB.pendingCards[group.id] = { id: Date.now(), card: card, groupId: group.id, groupName: group.name, timestamp: Date.now(), viewed: false };
+  addLog('card-draw', `📤 تم إرسال كارت "${card.title}" لـ ${group.name}`);
+  await save();
+  closeModal();
+  closeWheelOverlay();
+  toast(`✅ تم إرسال الكارت لـ ${group.name}`);
+}
+
+function showModal(html) {
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalBg').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('modalBg').classList.remove('show');
+}
+
+function toast(msg, type='ok') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + (type === 'err' ? 'err' : '');
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+document.getElementById('modalBg').addEventListener('click', e => {
+  if (e.target.id === 'modalBg') closeModal();
+});
+
+initApp();
+</script>
+</body>
+</html>
